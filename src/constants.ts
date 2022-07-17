@@ -13,6 +13,7 @@ export const COLORS = {
   textSecondary: "#666666",
   background: "#FFFFFF",
   backgroundCard: "#F0F0F0",
+  borderPrimary: "#CFCFCF",
 
   white: "#FFFFFF",
   positive: "#16c784",

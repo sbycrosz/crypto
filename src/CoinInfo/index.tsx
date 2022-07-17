@@ -22,31 +22,38 @@ export default function CoinInfo(props: Props) {
   const [displayPeriod, setDisplayPeriod] = useState(PERIOD_PICKER_VALUE.HOUR);
 
   const { data, error } = useSWR<HistoricalAPIResponse>(() => {
-    // Cryptocompare API is kind of a pain to use
-    const [api, limit] = (() => {
+    // Cryptocompare API is kind of a pain to use, but here it is :)
+    const [api, limit, aggregate] = (() => {
       switch (displayPeriod) {
         case PERIOD_PICKER_VALUE.HOUR:
-          return ["histominute", 60];
+          // 60 datapoints 1 minute each
+          return ["histominute", 60, 1];
 
         case PERIOD_PICKER_VALUE.DAY:
-          return ["histohour", 24];
+          // 24 datapoints 1 hour each
+          return ["histohour", 48, 30];
 
         case PERIOD_PICKER_VALUE.WEEK:
-          return ["histoday", 7];
+          // 14 datapoints 12 hours each
+          return ["histohour", 14, 12];
 
         case PERIOD_PICKER_VALUE.MONTH:
-          return ["histoday", 30];
+          // 15 datapoints 2 days each
+          return ["histoday", 15, 2];
 
         case PERIOD_PICKER_VALUE.QUARTER:
-          return ["histoday", 90];
+          // 30 datapoints 3 days each
+          return ["histoday", 30, 3];
 
         case PERIOD_PICKER_VALUE.YEAR:
-          return ["histoday", 365];
+          // 36 datapoints 10 days each
+          return ["histoday", 36, 10];
       }
     })();
 
     return `${API_BASE_URL}/data/v2/${api}?${makeQueryString({
       limit,
+      aggregate,
       fsym: symbol,
       tsym: displayCurrency,
       api_key: API_KEY,

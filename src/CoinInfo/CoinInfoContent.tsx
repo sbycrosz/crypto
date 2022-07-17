@@ -164,7 +164,8 @@ export default function CoinInfoContent(props: Props) {
           data={chartData}
           style={{
             data: {
-              strokeWidth: 0,
+              strokeWidth: 1,
+              stroke: COLORS.borderPrimary,
             },
           }}
         />
